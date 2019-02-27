@@ -92,6 +92,10 @@ func main(){
   r.POST("/customers", CreateCustomer)
   r.PUT("/customers/:id", UpdateCustomer)
   r.DELETE("/customers/:id", DeleteCustomer)
+
+  for _, element := range FindCustomerCities(){
+  	fmt.Println(element)
+  }
   r.Run(":8080")
 }
 
@@ -171,7 +175,6 @@ func willRainAt(location string) bool{
 	return false
 }
 
-
 func RequestWeatherAt(location string) (weatherData WeatherData){
 	response, err := http.Get("http://api.openweathermap.org/data/2.5/forecast?q="+location+"&APPID=2aa5d8c417225481239400cc3a8a5409")
 	if err != nil {
@@ -186,4 +189,26 @@ func RequestWeatherAt(location string) (weatherData WeatherData){
 	return 
 	
 	//jsonData := map[string]string
+}
+
+func FindCustomerCities() []string{
+	var customers []Customer
+	db.Find(&customers)
+	var cities []string
+	for _, element := range customers {
+		if (!Contains(cities, element.Location)){
+			cities = append(cities, element.Location)
+		}
+	}
+
+	return cities
+}
+
+func Contains(haystack []string, needle string) bool {
+	for _, element := range haystack {
+		if needle == element{
+			return true
+		}
+	}
+	return false
 }
