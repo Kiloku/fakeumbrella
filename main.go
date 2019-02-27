@@ -155,11 +155,21 @@ func GetWeatherCustomer(c *gin.Context) {
 		fmt.Println(err)
 	} else {
 		fmt.Println(customer.Location)
-		c.JSON(200, RequestWeatherAt(customer.Location))//gin.H{"location": customer.Location})//customer.Location)
-		//c.JSON(200, Customer)
+		c.JSON(200, gin.H{"Customer":customer, "RainExpected":willRainAt(customer.Location)})
+		//c.JSON(200, RequestWeatherAt(customer.Location))
+		//fmt.Println(willRainAt(customer.Location))
 	}
 }
 
+func willRainAt(location string) bool{
+	weather := RequestWeatherAt(location)
+	for _, element := range weather.List {
+		if element.Weather[0].Main == "Rain"{
+			return true
+		}
+	}
+	return false
+}
 
 
 func RequestWeatherAt(location string) (weatherData WeatherData){
