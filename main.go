@@ -45,6 +45,9 @@ type WeatherData struct {
 			Speed float64 `json:"speed"`
 			Deg   float64 `json:"deg"`
 		} `json:"wind"`
+		Rain struct {
+			ThreeH float64 `json:"3h"`
+		} `json:"rain"`
 		Sys struct {
 			Pod string `json:"pod"`
 		} `json:"sys"`
@@ -156,6 +159,8 @@ func GetWeatherCustomer(c *gin.Context) {
 		//c.JSON(200, Customer)
 	}
 }
+
+
 
 func RequestWeatherAt(location string) (weatherData WeatherData){
 	response, err := http.Get("http://api.openweathermap.org/data/2.5/forecast?q="+location+"&APPID=2aa5d8c417225481239400cc3a8a5409")
