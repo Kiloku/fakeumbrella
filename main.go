@@ -85,12 +85,13 @@ func main(){
   r := gin.Default()
   r.GET("/customers/", GetCustomers)
   r.GET("/customers/:id", GetCustomer)
-  r.GET("/weather/:id", GetWeatherCustomer)
   r.POST("/customers", CreateCustomer)
   r.PUT("/customers/:id", UpdateCustomer)
   r.DELETE("/customers/:id", DeleteCustomer)
-
-  for _, element := range FindCustomerCities(){
+  r.GET("/weather-for-customer/:id", GetWeatherCustomer)
+  r.GET("/forecasts/cities/", GetForecastCities)
+  r.GET("/forecasts/customers/", GetForecastsCustomers)
+  for _, element := range FindCitiesServed(){
   	fmt.Println(element)
   }
   r.Run(":8080")
@@ -116,6 +117,29 @@ func GetWeatherCustomer(c *gin.Context) {
 	}
 }
 
+func GetForecastsCustomers(c *gin.Context){
+	var customersInCities []CityWithCustomers
+	var forecasts []gin.H 
+	customersInCities = FindCustomersInCities()
+	for _, element := range customersInCities {
+		var forecast RainForecast
+		forecast.WillRain, forecast.When = willRainAt(element.City)
+		forecasts = append(forecasts, gin.H{"City": element.City, "Customers" :  element.Customers, "Forecast" : forecast})
+	} 
+	c.JSON(200, forecasts)
+}
+
+func GetForecastCities(c *gin.Context){
+	cities := FindCitiesServed()
+	var forecasts []gin.H
+	for _, element := range cities {
+		var forecast RainForecast
+		forecast.WillRain, forecast.When = willRainAt(element)
+		forecasts = append(forecasts, gin.H{"City": element, "Forecast":forecast})
+	}
+	c.JSON(200, forecasts)
+}
+
 func willRainAt(location string) (bool, time.Time) {
 	weather := RequestWeatherAt(location)
 	for _, element := range weather.List {
@@ -136,13 +160,10 @@ func RequestWeatherAt(location string) (weatherData WeatherData){
 		json.Unmarshal(data, &weatherData)	
 		
 	}
-	//weatherData := WeatherData{}
 	return 
-	
-	//jsonData := map[string]string
 }
 
-func FindCustomerCities() []string{
+func FindCitiesServed() []string{
 	var customers []Customer
 	db.Find(&customers)
 	var cities []string
@@ -153,6 +174,22 @@ func FindCustomerCities() []string{
 	}
 
 	return cities
+}
+
+type CityWithCustomers struct{
+	City string `json:"city"`
+	Customers []Customer `json:"customers"` 
+}
+
+func FindCustomersInCities() []CityWithCustomers {
+	cities := FindCitiesServed() 
+	var customersInCities []CityWithCustomers
+	for _, element := range cities {
+		var customers []Customer 
+		db.Where(&Customer{Location:element}).Find(&customers)
+		customersInCities = append(customersInCities, CityWithCustomers{City: element, Customers: customers})
+	}
+	return customersInCities
 }
 
 func Contains(haystack []string, needle string) bool {
