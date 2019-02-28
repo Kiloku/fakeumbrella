@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	
+	"time"
 	"encoding/json"
 	
 	"io/ioutil"
@@ -67,14 +67,11 @@ type WeatherData struct {
 	} `json:"city"`
 }
 
-type Customer struct {
-	ID uint `json:"id"`
-	Name string `json:"name"`
-	Location string `json:"location"`
-	Contact string `json:"contact"`
-	Telephone string `json:"telephone"`
-	Employees uint `json:"employees"`
+type RainForecast struct{
+	WillRain bool `json:"willRain"`
+	When time.Time `json:"when"`
 }
+
 
 func main(){
   db, err = gorm.Open("sqlite3", "./gorm.db")
@@ -99,57 +96,7 @@ func main(){
   r.Run(":8080")
 }
 
-func DeleteCustomer(c *gin.Context) {
-	id := c.Params.ByName("id")
-	var customer Customer
-	d := db.Where("id = ?", id).Delete(&customer)
-	fmt.Println(d)
-	c.JSON(200, gin.H{"id #" + id: "deleted"})
-}
 
-func UpdateCustomer(c *gin.Context) {
-	var customer Customer
-	id := c.Params.ByName("id")
-
-	if err := db.Where("id = ?", id).First(&customer).Error; err != nil {
-		c.AbortWithStatus(404)
-		fmt.Println(err)
-	}
-	c.BindJSON(&customer)
-
-	db.Save(&customer)
-	c.JSON(200, customer)
-}
-
-func CreateCustomer(c *gin.Context) {
-	var customer Customer
-	c.BindJSON(&customer)
-
-	db.Create(&customer)
-	c.JSON(200, customer)
-}
-
-func GetCustomer(c *gin.Context) {
-	id := c.Params.ByName("id")
-	var customer Customer
-	if err := db.Where("id = ?", id).First(&customer).Error; err != nil {
-		c.AbortWithStatus(404)
-		fmt.Println(err)
-	} else {
-		c.JSON(200, customer)
-	}
-}
-
-func GetCustomers(c *gin.Context) {
-	var customers []Customer
-	err := db.Find(&customers).Error
-	if err != nil {
-    	c.AbortWithStatus(404)
-    	fmt.Println(err)
- 	} else {
-    	c.JSON(200, customers)
-	}
-}
 
 func GetWeatherCustomer(c *gin.Context) { 
 	id := c.Params.ByName("id")
@@ -159,20 +106,24 @@ func GetWeatherCustomer(c *gin.Context) {
 		fmt.Println(err)
 	} else {
 		fmt.Println(customer.Location)
-		c.JSON(200, gin.H{"Customer":customer, "RainExpected":willRainAt(customer.Location)})
-		//c.JSON(200, RequestWeatherAt(customer.Location))
-		//fmt.Println(willRainAt(customer.Location))
+		var forecast RainForecast
+		forecast.WillRain, forecast.When = willRainAt(customer.Location)
+		if !forecast.WillRain{
+			c.JSON(200, gin.H{"Customer":customer, "RainExpected":gin.H{"willRain":forecast.WillRain}})
+		} else {
+			c.JSON(200, gin.H{"Customer":customer, "RainExpected":forecast})
+		}
 	}
 }
 
-func willRainAt(location string) bool{
+func willRainAt(location string) (bool, time.Time) {
 	weather := RequestWeatherAt(location)
 	for _, element := range weather.List {
 		if element.Weather[0].Main == "Rain"{
-			return true
+			return true, time.Unix(int64(element.Dt), 0)
 		}
 	}
-	return false
+	return false, time.Unix(0,0)
 }
 
 func RequestWeatherAt(location string) (weatherData WeatherData){
