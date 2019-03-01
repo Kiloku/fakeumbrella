@@ -41,9 +41,9 @@ func UpdateCustomer(c *gin.Context) {
 func CreateCustomer(c *gin.Context) {
 	var customer Customer
 	c.BindJSON(&customer)
-
 	db.Create(&customer)
 	c.JSON(200, customer)
+	return
 }
 
 func GetCustomer(c *gin.Context) {

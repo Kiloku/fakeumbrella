@@ -69,7 +69,7 @@ type WeatherData struct {
 
 type RainForecast struct{
 	WillRain bool `json:"willRain"`
-	When time.Time `json:"when"`
+	When int `json:"when"`
 }
 
 
@@ -85,7 +85,7 @@ func main(){
   	r := gin.Default()
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:4200"},
-		AllowMethods:     []string{"PUT", "PATCH", "GET"},
+		AllowMethods:     []string{"PUT", "POST", "PATCH", "GET", "DELETE"},
 		AllowHeaders:     []string{"Origin","Content-Type"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: false,
@@ -148,7 +148,17 @@ func GetForecastCities(c *gin.Context){
 	c.JSON(200, forecasts)
 }
 
-func willRainAt(location string) (bool, time.Time) {
+func willRainAt(location string) (bool, int) {
+	weather := RequestWeatherAt(location)
+	for _, element := range weather.List {
+		if element.Weather[0].Main == "Rain"{
+			return true, element.Dt
+		}
+	}
+	return false, 0
+}
+
+func willRainAtParsedTime(location string) (bool, time.Time) {
 	weather := RequestWeatherAt(location)
 	for _, element := range weather.List {
 		if element.Weather[0].Main == "Rain"{
@@ -157,6 +167,7 @@ func willRainAt(location string) (bool, time.Time) {
 	}
 	return false, time.Unix(0,0)
 }
+
 
 func RequestWeatherAt(location string) (weatherData WeatherData){
 	response, err := http.Get("http://api.openweathermap.org/data/2.5/forecast?q="+location+"&APPID=2aa5d8c417225481239400cc3a8a5409")
