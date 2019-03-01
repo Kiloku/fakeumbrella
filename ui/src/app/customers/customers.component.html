@@ -1,0 +1,17 @@
+<p>
+  customers works!a
+</p>
+<button routerLink="./new" routerLinkActive="active">New</button>
+<ul>
+	<li *ngFor="let customer of customers | async" >
+		<br>
+		<button routerLink="./manage/{{customer.id}}" routerLinkActive="active">Manage</button>
+	    <ul>
+	    	<li>ID: {{customer.id}}</li>
+			<li>Name: {{customer.name}}</li>
+	    	<li>location: {{customer.location}}</li>
+	    	<li>employees: {{customer.employees}}</li>
+		</ul>
+		<br>
+    </li>
+</ul>

@@ -1,0 +1,15 @@
+<p>
+  manage works!
+</p>
+<div *ngIf="customer != null"> 
+	<ul>
+		<li>ID: {{customer.id}}</li>
+		<li>Name: {{customer.name}}</li>
+		<li>location: {{customer.location}}</li>
+		<li>employees: {{customer.employees}}</li>
+	</ul>
+	<input #rename_input ><button (click)="rename_customer(rename_input.value)">Rename</button>
+	<button (click)="delete_customer()" style="color:red">Delete</button>
+	<br>
+	<button (click)="back()">Back</button>
+</div>

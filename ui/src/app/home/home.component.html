@@ -1,0 +1,19 @@
+<p>
+  home works!
+</p>
+<ul>
+	<li *ngFor="let forecast of forecasts ">
+		<div *ngIf="forecast.Forecast.willRain">
+			<p>Rain expected in <b>{{forecast.City}}</b>. <br>The following customers have to be notified:</p>
+			<ul>
+				<li *ngFor="let customer of forecast.Customers">
+					<p><b>{{customer.name}}</b></p>
+					
+					<p>Contact: {{customer.contact}} (Phone Number: {{customer.telephone}})</p>
+					<p>Rain expected at {{parseTime(forecast.Forecast.when)}}</p>
+				</li>
+			</ul>
+		</div>
+		<p *ngIf="!forecast.Forecast.willRain">It will not rain in {{forecast.City}}.</p>
+	</li>
+</ul>
