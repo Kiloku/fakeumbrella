@@ -7,8 +7,8 @@ import (
 	
 	"io/ioutil"
 	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/cors"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
@@ -74,27 +74,35 @@ type RainForecast struct{
 
 
 func main(){
-  db, err = gorm.Open("sqlite3", "./gorm.db")
-  if err != nil {
-  	fmt.Println(err)
-  }
-  defer db.Close()
+	db, err = gorm.Open("sqlite3", "./gorm.db")
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer db.Close()
 
-  db.AutoMigrate(&Customer{})
+	db.AutoMigrate(&Customer{})
 
-  r := gin.Default()
-  r.GET("/customers/", GetCustomers)
-  r.GET("/customers/:id", GetCustomer)
-  r.POST("/customers", CreateCustomer)
-  r.PUT("/customers/:id", UpdateCustomer)
-  r.DELETE("/customers/:id", DeleteCustomer)
-  r.GET("/weather-for-customer/:id", GetWeatherCustomer)
-  r.GET("/forecasts/cities/", GetForecastCities)
-  r.GET("/forecasts/customers/", GetForecastsCustomers)
-  for _, element := range FindCitiesServed(){
-  	fmt.Println(element)
-  }
-  r.Run(":8080")
+  	r := gin.Default()
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:4200"},
+		AllowMethods:     []string{"PUT", "PATCH", "GET"},
+		AllowHeaders:     []string{"Origin","Content-Type"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: false,
+		MaxAge: 12 * time.Hour,
+	}))
+	r.GET("/customers/", GetCustomers)
+	r.GET("/customers/:id", GetCustomer)
+	r.POST("/customers", CreateCustomer)
+	r.PUT("/customers/:id", UpdateCustomer)
+	r.DELETE("/customers/:id", DeleteCustomer)
+	r.GET("/weather-for-customer/:id", GetWeatherCustomer)
+	r.GET("/forecasts/cities/", GetForecastCities)
+	r.GET("/forecasts/customers/", GetForecastsCustomers)
+	for _, element := range FindCitiesServed(){
+		fmt.Println(element)
+	}
+	r.Run(":8080")
 }
 
 
