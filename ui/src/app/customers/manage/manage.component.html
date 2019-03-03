@@ -4,11 +4,15 @@
 <div *ngIf="customer != null"> 
 	<ul>
 		<li>ID: {{customer.id}}</li>
-		<li>Name: {{customer.name}}</li>
-		<li>location: {{customer.location}}</li>
-		<li>employees: {{customer.employees}}</li>
+		<li>Name: {{customer.name}} <input #rename_input > <button (click)="rename_customer(rename_input.value)">Rename</button></li>
+		<li>Location: {{customer.location}} <input #location_input > <button (click)="edit_location(location_input.value)">Update</button></li>
+		<li>Employees: {{customer.employees}} <input #employees_input type="number"> <button (click)="edit_employees(employees_input.value)">Update</button></li>
+		<li>Contact: {{customer.contact}} <input #contact_input > <button (click)="edit_contact(contact_input.value)">Update</button></li>
+		<li>Phone N.: {{customer.telephone}} <input #telephone_input > <button (click)="edit_telephone(telephone_input.value)">Update</button></li>
 	</ul>
-	<input #rename_input ><button (click)="rename_customer(rename_input.value)">Rename</button>
+	<br>
+	<!--<button (click)="edit_customer(rename_input.value, employees_input.value, location_input.value, contact_input.value, telephone_input.value)" style="color:red">Save Changes</button> -->
+	<br>
 	<button (click)="delete_customer()" style="color:red">Delete</button>
 	<br>
 	<button (click)="back()">Back</button>

@@ -40,6 +40,48 @@ export class ManageComponent implements OnInit {
 		});
 	}
 
+	edit_location(location){
+		this.http.put("http://localhost:8080/customers/" + this.customer.id, {'location': location}).subscribe((res:any)=>{
+			console.log(res);
+			this.get_customer(this.customer.id);
+		});
+	}
+
+	edit_employees(employees){
+		this.http.put("http://localhost:8080/customers/" + this.customer.id, {'employees': parseInt(employees)}).subscribe((res:any)=>{
+			console.log(res);
+			this.get_customer(this.customer.id);
+		});
+	}
+
+	
+	edit_contact(contact){
+		this.http.put("http://localhost:8080/customers/" + this.customer.id, {'contact': contact}).subscribe((res:any)=>{
+			console.log(res);
+			this.get_customer(this.customer.id);
+		});
+	}
+
+	edit_telephone(telephone){
+		this.http.put("http://localhost:8080/customers/" + this.customer.id, {'telephone': telephone}).subscribe((res:any)=>{
+			console.log(res);
+			this.get_customer(this.customer.id);
+		});
+	}
+
+
+
+
+	edit_customer(name? , employees? : number , location?, contact?, telephone?){
+		console.log("saving edits?");
+		let values = {'name': name, 'employees' : employees, 'location' : location, 'contact' : contact, 'telephone': telephone};
+
+		console.log(values);
+				this.http.put("http://localhost:8080/customers/" + this.customer.id, values).subscribe((res:any)=>{
+			console.log(res);
+			this.get_customer(this.customer.id);
+		});
+	}
 	delete_customer(){
 		this.http.delete("http://localhost:8080/customers/" + this.customer.id).subscribe((res:any)=>{
 			console.log("deleting...");
