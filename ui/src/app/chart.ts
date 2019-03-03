@@ -34,8 +34,8 @@ export class Chart
 		this._materialGreen = new StandardMaterial('green', this._scene);
 		this._materialRed.alpha = 1;
 		this._materialGreen.alpha = 1;
-		this._materialRed.diffuseColor = new Color3(1.0, 0.4, 0.4);
-		this._materialGreen.diffuseColor = new Color3(0.4, 1.0, 0.4);
+		this._materialRed.diffuseColor = new Color3(0.8, 0.4, 0.4);
+		this._materialGreen.diffuseColor = new Color3(0.4,  0.8, 0.4);
 
 		this._camera.setTarget(Vector3.Zero());
 
@@ -54,7 +54,7 @@ export class Chart
 			this._bars[i].position.x = -3.5 + (i * 3);
 			this._bars[i].position.y = -3.5;
 			this._bars[i].setPivotPoint(new Vector3(0,-1,0));
-			this._bars[i].material = this._materialGreen;
+			this._bars[i].material = this._materialRed;
 			this._text[i] = new TextBlock('text' + i, 'comp' + i);
 			this._gui.addControl(this._text[i]);
 			this._text[i].left = -2 + (this._bars[i].position.x * 33);
@@ -122,7 +122,7 @@ export class Chart
 
 				if (customers[i].location == forecasts[j].City && forecasts[j].Forecast.willRain)
 				{
-					this._bars[i].material = this._materialRed;
+					this._bars[i].material = this._materialGreen;
 				}
 				/*console.log(forecasts[j].Forecast.willRain);
 
