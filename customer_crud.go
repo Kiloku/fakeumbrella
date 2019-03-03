@@ -33,6 +33,7 @@ func UpdateCustomer(c *gin.Context) {
 		fmt.Println(err)
 	}
 	c.BindJSON(&customer)
+	fmt.Println(customer)
 
 	db.Save(&customer)
 	c.JSON(200, customer)
