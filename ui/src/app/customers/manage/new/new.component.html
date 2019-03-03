@@ -1,10 +1,9 @@
-<p>
-  new works!
-</p>
-<label>Name: </label><input #name><br>
-<label>Location: </label><input #location><br>
-<label>Number of Employees: </label><input type='number' #employees><br>
-<label>Contact</label><input #contact><br>
-<label>Phone N.</label><input #telephone><br>
-<br>
-<button (click)="create_customer(name.value, location.value, employees.value, contact.value, telephone.value)">Submit</button>
+<div class="new-area">
+	<label>Name: </label><input #name><br>
+	<label>Location: </label><input #location><br>
+	<label>Number of Employees: </label><input type='number' #employees><br>
+	<label>Contact</label><input #contact><br>
+	<label>Phone N.</label><input #telephone><br>
+	<br>
+	<button (click)="create_customer(name.value, location.value, employees.value, contact.value, telephone.value)">Submit</button>
+</div>

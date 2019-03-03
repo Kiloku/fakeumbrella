@@ -1,0 +1,17 @@
+.new-area {
+	width: 700px;
+}
+
+.new-area input {
+	height: 40px;
+}
+
+.new-area input[type=number] {
+	width: 60px;
+}
+
+.new-area label{
+	display: inline-block;
+	min-width: 300px;
+	max-width: 300px;
+}

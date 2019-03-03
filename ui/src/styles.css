@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+
+p, h1, h2, h3, label, li{
+	font-family: Roboto;
+}
+
+li {
+	list-style: none;
+}
+
+.logo {
+	float:left;
+	width: 128px;
+	height: 128px;
+}
+
+.header {
+	padding-bottom: 40px;
+}
+
+.navbar {
+	text-align: center;
+}

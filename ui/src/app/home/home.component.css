@@ -1,0 +1,9 @@
+
+.forecast-list>li:nth-child(even) 
+{
+	background-color: #DDD;
+}
+
+.chart  {
+	text-align: center;	
+}

@@ -1,16 +1,12 @@
-<p>
-  home works!
-</p>
-<ul>
+<ul class="forecast-list">
 	<li *ngFor="let forecast of forecasts ">
 		<div *ngIf="forecast.Forecast.willRain">
 			<p>Rain expected in <b>{{forecast.City}}</b>. <br>The following customers have to be notified:</p>
 			<ul>
 				<li *ngFor="let customer of forecast.Customers">
-					<p><b>{{customer.name}}</b></p>
-					
-					<p>Contact: {{customer.contact}} (Phone Number: {{customer.telephone}})</p>
-					<p>Rain expected at {{parseTime(forecast.Forecast.when)}}</p>
+					<p><b>{{customer.name}}</b><br>
+					Contact: {{customer.contact}} (Phone Number: {{customer.telephone}})<br>
+					Rain expected at {{parseTime(forecast.Forecast.when)}}</p>
 				</li>
 			</ul>
 		</div>
@@ -18,4 +14,6 @@
 	</li>
 </ul>
 
+<div class="chart">
 <canvas id="renderCanvas" #renderCanvas width="600" height="400" ></canvas> 
+</div>

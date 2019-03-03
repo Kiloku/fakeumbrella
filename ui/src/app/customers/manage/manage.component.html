@@ -1,19 +1,17 @@
-<p>
-  manage works!
-</p>
-<div *ngIf="customer != null"> 
+<div *ngIf="customer != null" class="manage-area"> 
 	<ul>
-		<li>ID: {{customer.id}}</li>
-		<li>Name: {{customer.name}} <input #rename_input > <button (click)="rename_customer(rename_input.value)">Rename</button></li>
-		<li>Location: {{customer.location}} <input #location_input > <button (click)="edit_location(location_input.value)">Update</button></li>
-		<li>Employees: {{customer.employees}} <input #employees_input type="number"> <button (click)="edit_employees(employees_input.value)">Update</button></li>
-		<li>Contact: {{customer.contact}} <input #contact_input > <button (click)="edit_contact(contact_input.value)">Update</button></li>
-		<li>Phone N.: {{customer.telephone}} <input #telephone_input > <button (click)="edit_telephone(telephone_input.value)">Update</button></li>
+		<li><label>ID: {{customer.id}}</label></li>
+		<li><label>Name: {{customer.name}}</label> <input #rename_input > <button (click)="rename_customer(rename_input.value)">Rename</button></li>
+		<li><label>Location: {{customer.location}}</label> <input #location_input > <button (click)="edit_location(location_input.value)">Update</button></li>
+		<li><label>Employees: {{customer.employees}}</label> <input #employees_input type="number"> <button (click)="edit_employees(employees_input.value)">Update</button></li>
+		<li><label>Contact: {{customer.contact}}</label> <input #contact_input > <button (click)="edit_contact(contact_input.value)">Update</button></li>
+		<li><label>Phone N.: {{customer.telephone}}</label> <input #telephone_input > <button (click)="edit_telephone(telephone_input.value)">Update</button></li>
 	</ul>
 	<br>
 	<!--<button (click)="edit_customer(rename_input.value, employees_input.value, location_input.value, contact_input.value, telephone_input.value)" style="color:red">Save Changes</button> -->
-	<br>
+	
 	<button (click)="delete_customer()" style="color:red">Delete</button>
+	<br>
 	<br>
 	<button (click)="back()">Back</button>
 </div>
