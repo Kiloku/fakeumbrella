@@ -119,23 +119,10 @@ export class Chart
 
 			for (let j = 0; j < forecasts.length; j++)
 			{
-
 				if (customers[i].location == forecasts[j].City && forecasts[j].Forecast.willRain)
 				{
 					this._bars[i].material = this._materialGreen;
 				}
-				/*console.log(forecasts[j].Forecast.willRain);
-
-				{
-					for (let h = 0; h < forecasts[j].Customers.length; h++)
-					{
-						console.log(forecasts[j].Customers[h].name + " - " + customers[i].name)
-						if (forecasts[j].Customers[h].name == customers[i].name)
-						{
-							this._bars[i].material = this._materialRed;
-						}
-					}
-				}*/
 			}
 		}
 	}

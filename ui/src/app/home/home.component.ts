@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
             this.forecasts.reverse();*/
             for (let i = 0; i < this.forecasts.length; i++)
             {
-            	if (!this.forecasts[i].Forecast.willRain)
+            	if (!this.forecasts[i]["Forecast"].willRain)
             	{
             		console.log("splicing");
             		let temp = this.forecasts[i];
