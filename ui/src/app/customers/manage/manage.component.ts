@@ -90,9 +90,5 @@ export class ManageComponent implements OnInit {
 		});
 	}
 
-	back(){
-		this.router.navigate(['customers']);
-
-	}
 
 }
